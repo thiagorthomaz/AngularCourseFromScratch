@@ -1,17 +1,43 @@
 <!DOCTYPE html>
-<html ng-app="helloWorld">
+<html ng-app="phonebook">
   <head>
 
-    <title>Hello world</title>
+    <title>Phonebook</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <script src="extras/angular-1.5.5/angular.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="libs/bootstrap-3.3.6/css/bootstrap.min.css">
+    
+    
+    <style>
+      .jumbotron{
+        width: 400px;
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 20px;
+      }
+      
+    </style>
+    
+    <script src="libs/angular-1.5.5/angular.min.js"></script>
     
     <script>
-      var app = angular.module("helloWorld", []);
-      app.controller("helloWorldCtrl", function($scope){
-        $scope.message = "Hello World!!";
+      var app = angular.module("phonebook", []);
+      app.controller("phonebookCtrl", function($scope){
+        $scope.app = "Phonebook!";
+        
+        $scope.contacts = [
+          {name : "Pedro", phone : "99998888"},
+          {name : "Ana", phone : "99998555"},
+          {name : "Maria", phone : "99998777"}
+        ];
+        
+        $scope.addContact = function(contact){
+          $scope.contacts.push(angular.copy(contact));
+          delete $scope.contact;
+        };
+
       });
       
     </script>
@@ -19,8 +45,39 @@
   </head>
   <body>
 
-    <div ng-controller="helloWorldCtrl">
-      {{ message }}
+    <div ng-controller="phonebookCtrl">
+      
+      <div class="jumbotron">
+        <h3> {{ app }} </h3>
+        
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Telefone</th>
+            </tr>
+          </thead>
+          
+          <tbody>
+            <tr ng-repeat="contact in contacts">
+              <td>{{contact.name}}</td>
+              <td>{{contact.phone}}</td>
+            </tr>
+          </tbody>
+            
+        </table>
+        
+        <hr>
+        
+        <input class="form-control" type="text" placeholder="Name" ng-model="contact.name">
+        <input class="form-control" type="text" placeholder="Phone" ng-model="contact.phone">
+        <button class="btn btn-primary btn-block" ng-click="addContact(contact)">Add contact</button>
+        
+        {{ name }} {{ phone }}
+        
+        
+        
+      </div>
 
     </div>
 
