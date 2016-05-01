@@ -11,11 +11,13 @@
     
     <style>
       .jumbotron, .footer{
-        width: 400px;
+        width: 600px;
         text-align: center;
         margin-left: auto;
         margin-right: auto;
         margin-top: 20px;
+        padding-left: 10px;
+        padding-right:10px;
       }
       
       .selected {
@@ -25,6 +27,7 @@
     </style>
     
     <script src="libs/angular-1.5.5/angular.min.js"></script>
+    <script src="libs/angular-1.5.5/i18n/angular-locale_pt-br.js"></script>
     
     <script>
       var app = angular.module("phonebook", []);
@@ -32,17 +35,18 @@
         $scope.app = "Phonebook!";
         
         $scope.contacts = [
-          {name : "Pedro", phone : "99998888"},
-          {name : "Ana", phone : "99998555"},
-          {name : "Maria", phone : "99998777"}
+          {name : "Pedro", phone : "99998888", date : new Date(), operator : {name : "Oi", code : 14, category : "Mobile"}},
+          {name : "Ana", phone : "99998555", date : new Date(), operator : {name : "Tim", code : 41, category : "Mobile"}},
+          {name : "Maria", phone : "91998999", date : new Date(), operator : {name : "Vivo", code : 15, category : "Mobile"}},
+          {name : "Marcia", phone : "99998777", date : new Date(), operator : {name : "Oi", code : 14, category : "Mobile"}}
         ];
         
         $scope.operators = [
-          {name : "Oi", code : 14, category : "Mobile"},
-          {name : "Tim", code : 41, category : "Mobile"},
-          {name : "Vivo", code : 15, category : "Mobile"},
-          {name : "GVT", code : 25, category : "Landline"},
-          {name : "Embratel", code : 21, category : "Landline"}
+          {name : "Oi", code : 14, category : "Mobile", price : 2},
+          {name : "Tim", code : 41, category : "Mobile", price : 1},
+          {name : "Vivo", code : 15, category : "Mobile", price : 2},
+          {name : "GVT", code : 25, category : "Landline", price : 3},
+          {name : "Embratel", code : 21, category : "Landline", price : 1}
         ];
         
         $scope.addContact = function(contact){
@@ -63,6 +67,11 @@
             return c.selected;
           });
         };
+        
+        $scope.orderBy = function(field){
+          $scope.orderByField = field;
+          $scope.directionoOfOrder = !$scope.directionoOfOrder;
+        };
 
       });
       
@@ -76,23 +85,27 @@
       <div class="jumbotron">
         <h3> {{ app }} </h3>
         
+        <input type="text" class="form-control" ng-model="search" placeholder="Type for seach" />
+        
         <table ng-show="contacts.length > 0" class="table">
           <thead>
             <tr>
               <th></th>
-              <th>Name</th>
-              <th>Phone</th>
-              <th>Operator</th>
+              <th><a href="" ng-click="orderBy('nome')">Name</a></th>
+              <th><a href="" ng-click="orderBy('phone')">Phone</a></th>
+              <th><a href="" ng-click="orderBy('operator')">Operator</a></th>
+              <th><a href="" ng-click="orderBy('date')">Date</a></th>
             </tr>
           </thead>
           
           <tbody>
             
-            <tr ng-class="{ selected : c.selected }" ng-repeat="c in contacts">
+            <tr ng-class="{ selected : c.selected }" ng-repeat="c in contacts | filter:search | orderBy:orderByField:directionoOfOrder">
               <td><input type="checkbox" ng-model="c.selected" /></td>
-              <td>{{c.name}}</td>
+              <td>{{c.name | uppercase }}</td>
               <td>{{c.phone}}</td>
-              <td>{{c.operator.name}}</td>
+              <td>{{c.operator.name | lowercase}}</td>
+              <td>{{c.date | date:'dd/MM/yyyy HH:mm' }}</td>
             </tr>
           </tbody>
             
@@ -103,7 +116,7 @@
         <input class="form-control" type="text" placeholder="Name" ng-model="contact.name">
         <input class="form-control" type="text" placeholder="Phone" ng-model="contact.phone">
         
-        <select class="form-control" ng-model="contact.operator" ng-options="operator.name group by operator.category for operator in operators">
+        <select class="form-control" ng-model="contact.operator" ng-options="operator.name + ' (' + (operator.price | currency) + ')' group by operator.category for operator in operators | orderBy:'name'">
           <option value="">Select one operator</option>
         </select>
         
