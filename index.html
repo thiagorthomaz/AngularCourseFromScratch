@@ -31,14 +31,16 @@
     
     <script>
       var app = angular.module("phonebook", []);
-      app.controller("phonebookCtrl", function($scope){
+      app.controller("phonebookCtrl", function($scope, $filter, uppercaseFilter){
         $scope.app = "Phonebook!";
         
+        //$filter is a function that receive a input.
+        //uppercaseFilter is uppercase sufixed with $filter.
         $scope.contacts = [
-          {name : "Pedro", phone : "99998888", date : new Date(), operator : {name : "Oi", code : 14, category : "Mobile"}},
-          {name : "Ana", phone : "99998555", date : new Date(), operator : {name : "Tim", code : 41, category : "Mobile"}},
-          {name : "Maria", phone : "91998999", date : new Date(), operator : {name : "Vivo", code : 15, category : "Mobile"}},
-          {name : "Marcia", phone : "99998777", date : new Date(), operator : {name : "Oi", code : 14, category : "Mobile"}}
+          {name : $filter("uppercase")("Pedro"), phone : "99998888", date : new Date(), operator : {name : "Oi", code : 14, category : "Mobile"}},
+          {name : $filter("uppercase")("Ana"), phone : "99998555", date : new Date(), operator : {name : "Tim", code : 41, category : "Mobile"}},
+          {name : uppercaseFilter("Maria"), phone : "91998999", date : new Date(), operator : {name : "Vivo", code : 15, category : "Mobile"}},
+          {name : uppercaseFilter("Marcia"), phone : "99998777", date : new Date(), operator : {name : "Oi", code : 14, category : "Mobile"}}
         ];
         
         $scope.operators = [
@@ -102,7 +104,7 @@
             
             <tr ng-class="{ selected : c.selected }" ng-repeat="c in contacts | filter:search | orderBy:orderByField:directionoOfOrder">
               <td><input type="checkbox" ng-model="c.selected" /></td>
-              <td>{{c.name | uppercase }}</td>
+              <td>{{c.name }}</td>
               <td>{{c.phone}}</td>
               <td>{{c.operator.name | lowercase}}</td>
               <td>{{c.date | date:'dd/MM/yyyy HH:mm' }}</td>
