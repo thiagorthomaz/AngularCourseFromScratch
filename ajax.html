@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>AJAX - Experience!</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  </head>
+  <body>
+    <h3>AJAX - Experience!</h3>
+    <div id="ajax"></div>
+
+    <script>
+
+      var get = function (url, callback) {
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState === 4) {
+            callback(xhr.responseText, xhr.status);
+          }
+        };
+        xhr.open("GET", url);
+        xhr.send(null);
+      };
+
+
+      get("backend/index.php", function (response) {
+        var element = document.getElementById("ajax");
+        element.innerHTML = response;
+        console.log(response);
+      });
+    </script>
+
+  </body>
+</html>
