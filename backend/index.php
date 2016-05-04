@@ -22,9 +22,9 @@ if (isPost()) {
 }
 
 function loadData(){
-  
-  $data = filter_input(INPUT_SESSION, "data");
-  if (is_null($data)){
+
+  if (!isset($_SESSION["data"])){
+    $data = $_SESSION["data"];
     $data = array();
     $oi = new Operator("Oi", "14", "Mobile", 2);
     $tim = new Operator("Tim", "41", "Mobile", 1);
@@ -45,6 +45,8 @@ function loadData(){
     $data['operator_list'][] = $gvt;
     $data['operator_list'][] = $embratel;
     $_SESSION["data"] = $data;
+  } else {
+    $data = $_SESSION["data"];
   }
   
   return $data;
@@ -53,6 +55,7 @@ function loadData(){
 
 function writeContact(Contact $c){
   $_SESSION["data"]['contact_list'][] = $c;
+print_r($_SESSION["data"]);
 }
 
 function getRequest(){
