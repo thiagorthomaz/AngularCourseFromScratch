@@ -31,28 +31,29 @@
     
     <script>
       var app = angular.module("phonebook", []);
-      app.controller("phonebookCtrl", function($scope, $filter, uppercaseFilter){
+      app.controller("phonebookCtrl", function($scope, $filter, $http, uppercaseFilter){
         $scope.app = "Phonebook!";
         
-        //$filter is a function that receive a input.
-        //uppercaseFilter is uppercase sufixed with $filter.
-        $scope.contacts = [
-          {name : $filter("uppercase")("Pedro"), phone : "99998888", date : new Date(), operator : {name : "Oi", code : 14, category : "Mobile"}},
-          {name : $filter("uppercase")("Ana"), phone : "99998555", date : new Date(), operator : {name : "Tim", code : 41, category : "Mobile"}},
-          {name : uppercaseFilter("Maria"), phone : "91998999", date : new Date(), operator : {name : "Vivo", code : 15, category : "Mobile"}},
-          {name : uppercaseFilter("Marcia"), phone : "99998777", date : new Date(), operator : {name : "Oi", code : 14, category : "Mobile"}}
-        ];
+        var loadContacts = function(){
+          $http.get("backend/index.php").success(function(data, status){
+            $scope.contacts = data.contact_list;
+          }).error(function(data, status){
+            $scope.message = "Error: " + data;
+          });
+        };
         
-        $scope.operators = [
-          {name : "Oi", code : 14, category : "Mobile", price : 2},
-          {name : "Tim", code : 41, category : "Mobile", price : 1},
-          {name : "Vivo", code : 15, category : "Mobile", price : 2},
-          {name : "GVT", code : 25, category : "Landline", price : 3},
-          {name : "Embratel", code : 21, category : "Landline", price : 1}
-        ];
+        var loadOperators = function(){
+          $http.get("backend/index.php").success(function(data, status){
+            $scope.operators = data.operator_list;
+          });
+        };
         
+        loadContacts();
+        loadOperators();
+
         $scope.addContact = function(contact){
-          $scope.contacts.push(angular.copy(contact));
+          $http.post("backend/index.php", contact);
+          loadContacts();
           delete $scope.contact;
         };
         
@@ -65,9 +66,11 @@
         };
         
         $scope.isContactSelected = function(contacts){
-          return contacts.some(function( c ) {
-            return c.selected;
-          });
+          if (contacts) {
+            return contacts.some(function( c ) {
+              return c.selected;
+            });  
+          }  
         };
         
         $scope.orderBy = function(field){
@@ -86,6 +89,7 @@
       
       <div class="jumbotron">
         <h3> {{ app }} </h3>
+        {{ message }}
         
         <input type="text" class="form-control" ng-model="search" placeholder="Type for seach" />
         

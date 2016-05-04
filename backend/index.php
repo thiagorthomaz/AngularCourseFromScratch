@@ -3,21 +3,71 @@
 require_once './Contact.class.php';
 require_once './Operator.class.php';
 
-$contact_list = array();
+session_start();
 
-          
-$oi = new Operator("Oi", "14", "Mobile", 2);
-$tim = new Operator("Tim", "41", "Mobile", 1);
-$vivo = new Operator("Vivo", "15", "Mobile", 3);
-$gvt = new Operator("GVT", "25", "Landline", 2);
-$embratel = new Operator("Embratel", "21", "Landline", 1);
+function isPost(){
+  return filter_input(INPUT_SERVER, "REQUEST_METHOD") == "POST";
+}
 
-$petter = new Contact("Petter", "9999-8888", $oi, "05/05/2016");
-$ana = new Contact("Ana", "9999-7777", $vivo, "05/05/2016");
-$maria = new Contact("Maria", "9999-5555", $tim, "05/05/2016");
+function isGet(){
+  return filter_input(INPUT_SERVER, "REQUEST_METHOD") == "GET";
+}
 
-$contact_list[] = $petter;
-$contact_list[] = $ana;
-$contact_list[] = $maria;
+if (isGet()){
+  getRequest();
+}
 
-echo json_encode($contact_list, JSON_PRETTY_PRINT);
+if (isPost()) {
+  postRequest();
+}
+
+function loadData(){
+  
+  $data = filter_input(INPUT_SESSION, "data");
+  if (is_null($data)){
+    $data = array();
+    $oi = new Operator("Oi", "14", "Mobile", 2);
+    $tim = new Operator("Tim", "41", "Mobile", 1);
+    $vivo = new Operator("Vivo", "15", "Mobile", 3);
+    $gvt = new Operator("GVT", "25", "Landline", 2);
+    $embratel = new Operator("Embratel", "21", "Landline", 1);
+
+    $petter = new Contact("Petter", "9999-8888", $oi, time());
+    $ana = new Contact("Ana", "9999-7777", $vivo, time());
+    $maria = new Contact("Maria", "9999-5555", $tim, time());
+
+    $data['contact_list'][] = $petter;
+    $data['contact_list'][] = $ana;
+    $data['contact_list'][] = $maria;
+    $data['operator_list'][] = $oi;
+    $data['operator_list'][] = $tim;
+    $data['operator_list'][] = $vivo;
+    $data['operator_list'][] = $gvt;
+    $data['operator_list'][] = $embratel;
+    $_SESSION["data"] = $data;
+  }
+  
+  return $data;
+  
+}
+
+function writeContact(Contact $c){
+  $_SESSION["data"]['contact_list'][] = $c;
+}
+
+function getRequest(){
+  $data = loadData();
+  echo json_encode($data, JSON_PRETTY_PRINT);
+}
+
+function postRequest(){
+  $data = json_decode(file_get_contents('php://input'), true);
+  $name = $data['name'];
+  $phone = $data['phone'];
+  $operator = new Operator($data["operator"]["name"], $data["operator"]["code"], $data["operator"]["category"], $data["operator"]["price"]);
+  $date = time();
+  $contact = new Contact($name, $phone, $operator, $date);
+  writeContact($contact);
+  echo json_encode($contact, JSON_PRETTY_PRINT);
+  
+}
