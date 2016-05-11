@@ -24,10 +24,15 @@ app.controller("phonebookCtrl", function ($scope, $filter, $http, uppercaseFilte
     delete $scope.contact;
   };
 
-  $scope.removeContact = function (contacts) {
+  $scope.removeContact = function (contacts) {    
     $scope.contacts = contacts.filter(function (c) {
       if (!c.selected) {
         return c;
+      }else {
+        $http.delete(server_url + "?id=" + c.id ).success(function (data, status) {
+          console.log(data);
+        });
+        
       }
     });
   };

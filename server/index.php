@@ -13,12 +13,20 @@ function isGet(){
   return filter_input(INPUT_SERVER, "REQUEST_METHOD") == "GET";
 }
 
+function isDelete(){
+  return filter_input(INPUT_SERVER, "REQUEST_METHOD") == "DELETE";
+}
+
 if (isGet()){
   getRequest();
 }
 
 if (isPost()) {
   postRequest();
+}
+
+if (isDelete()) {
+  deleteContact();
 }
 
 function loadData(){
@@ -61,6 +69,18 @@ print_r($_SESSION["data"]);
 function getRequest(){
   $data = loadData();
   echo json_encode($data, JSON_PRETTY_PRINT);
+}
+
+function deleteContact(){
+  $id = filter_input(INPUT_GET, "id");
+  if (!is_null($id)) {
+    $data = loadData();
+    foreach ($data['contact_list'] as $i => $contact) {
+      if ($contact->id == $id){
+        unset($_SESSION['data']['contact_list'][$i]);
+      }
+    } 
+  }
 }
 
 function postRequest(){
