@@ -1,17 +1,21 @@
-app.controller("phonebookCtrl", function ($scope, $filter, $http, uppercaseFilter) {
+app.controller("phonebookCtrl", function ($scope, $filter, ContactsAPI, OperatorAPI) {
   $scope.app = "Phonebook!";
 
   var loadContacts = function () {
-    $http.get(server_url).success(function (data, status) {
-      $scope.contacts = data.contact_list;
+    ContactsAPI.getContacts().success(function (data, status) {
+        var result = [];
+        for (var i in data) {
+           result.push(data[i]);
+        }
+      $scope.contacts = result;
     }).error(function (data, status) {
       $scope.message = "Error: " + data;
     });
   };
 
   var loadOperators = function () {
-    $http.get(server_url).success(function (data, status) {
-      $scope.operators = data.operator_list;
+    OperatorAPI.getOperators().success(function (data, status) {
+      $scope.operators = data;
     });
   };
 
@@ -19,9 +23,11 @@ app.controller("phonebookCtrl", function ($scope, $filter, $http, uppercaseFilte
   loadOperators();
 
   $scope.addContact = function (contact) {
-    $http.post(server_url, contact);
-    loadContacts();
-    delete $scope.contact;
+    ContactsAPI.saveContact(contact).success(function(data){ 
+        delete $scope.contact;
+        loadContacts();
+    });
+    
   };
 
   $scope.removeContact = function (contacts) {    
@@ -29,10 +35,9 @@ app.controller("phonebookCtrl", function ($scope, $filter, $http, uppercaseFilte
       if (!c.selected) {
         return c;
       }else {
-        $http.delete(server_url + "?id=" + c.id ).success(function (data, status) {
-          console.log(data);
+        ContactsAPI.removeContact(c).success(function (data, status) {
+          console.log("Contact: " + c.id + " removed");
         });
-        
       }
     });
   };

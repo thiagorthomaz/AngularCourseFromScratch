@@ -29,11 +29,9 @@ if (isDelete()) {
   deleteContact();
 }
 
-function loadData(){
-
+function loadData($filter = null){
+  $data = array();
   if (!isset($_SESSION["data"])){
-    $data = $_SESSION["data"];
-    $data = array();
     $oi = new Operator("Oi", "14", "Mobile", 2);
     $tim = new Operator("Tim", "41", "Mobile", 1);
     $vivo = new Operator("Vivo", "15", "Mobile", 3);
@@ -57,17 +55,22 @@ function loadData(){
     $data = $_SESSION["data"];
   }
   
-  return $data;
+  if (!is_null($filter)) {
+    return $data[$filter];  
+  } else {
+    return $data;
+  }
+  
   
 }
 
 function writeContact(Contact $c){
   $_SESSION["data"]['contact_list'][] = $c;
-print_r($_SESSION["data"]);
 }
 
 function getRequest(){
-  $data = loadData();
+  $filter = filter_input(INPUT_GET, "filter");
+  $data = loadData($filter);
   echo json_encode($data, JSON_PRETTY_PRINT);
 }
 
