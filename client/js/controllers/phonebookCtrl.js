@@ -9,7 +9,12 @@ app.controller("phonebookCtrl", function ($scope, $filter, ContactsAPI, Operator
         }
       $scope.contacts = result;
     }).error(function (data, status) {
-      $scope.message = "Error: " + data;
+      if (!data) {
+        $scope.error = "Error: Unable to load data.";
+      } else {
+        $scope.error = "Error: " + data;
+      }
+      
     });
   };
 
