@@ -33,7 +33,9 @@
       <div class="jumbotron">
         <h3> {{ app }} </h3>
         
-        <ui-alert title="Ops, something is wrong!" message="error"></ui-alert>
+        <ui-alert title="Ops, something is wrong!">
+          {{ error }}
+        </ui-alert>
         
         <input type="text" class="form-control" ng-model="search" placeholder="Type for seach" />
         

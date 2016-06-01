@@ -4,8 +4,8 @@ app.directive("uiAlert", function () {
     replace: true,
     restrict: "E",
     scope : {
-      title : "@",
-      message : "="
-    }
+      title : "@"
+    },
+    transclude: true
   };
 });
