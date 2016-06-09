@@ -1,6 +1,7 @@
 app.controller("phonebookCtrl", function ($scope, $filter, ContactsAPI, OperatorAPI) {
   $scope.app = "Phonebook!";
-
+  $scope.contact = {date : new Date().getTime()};
+  
   var loadContacts = function () {
     ContactsAPI.getContacts().success(function (data, status) {
         var result = [];

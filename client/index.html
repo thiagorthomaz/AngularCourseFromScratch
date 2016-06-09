@@ -15,6 +15,7 @@
     <script src="js/app.js"></script>
     <script src="js/ConfigValue.js"></script>
     <script src="js/directives/uiAlert.js"></script>
+    <script src="js/directives/uiDate.js"></script>
     
     <script src="js/filters/NameFilter.js"></script>
     <script src="js/filters/EllipsisFilter.js"></script>
@@ -67,8 +68,11 @@
         
         <hr>
         
+        {{ contact.date }}
+
         <input class="form-control" type="text" placeholder="Name" ng-model="contact.name">
         <input class="form-control" type="text" placeholder="Phone" ng-model="contact.phone">
+        <input class="form-control" type="text" placeholder="Date" ng-model="contact.date" ui-date>
         
         <select class="form-control" ng-model="contact.operator" ng-options="operator.name + ' (' + (operator.price | currency) + ')' group by operator.category for operator in operators | orderBy:'name'">
           <option value="">Select one operator</option>
