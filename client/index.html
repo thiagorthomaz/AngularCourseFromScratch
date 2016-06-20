@@ -15,6 +15,7 @@
     <script src="js/app.js"></script>
     <script src="js/ConfigValue.js"></script>
     <script src="js/directives/uiAlert.js"></script>
+    <script src="js/directives/slimAlert.js"></script>
     <script src="js/directives/uiDate.js"></script>
     
     <script src="js/filters/NameFilter.js"></script>
@@ -29,10 +30,13 @@
 
     <div ng-controller="phonebookCtrl">
       
-      
-      
       <div class="jumbotron">
         <h3> {{ app }} </h3>
+      
+        <slim-alert title="Info:" message="My information will be here!" type="info"></slim-alert>
+        <slim-alert title="Warning:" message="Be careful!" type="warning"></slim-alert>
+        <slim-alert title="Danger:" message="I want to leave this place!" type="danger"></slim-alert>
+        <slim-alert title="Success" message="All right!" type="success"></slim-alert>
         
         <ui-alert title="Ops, something is wrong!">
           {{ error }}
