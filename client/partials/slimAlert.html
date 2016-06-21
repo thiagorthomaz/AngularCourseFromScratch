@@ -1,51 +1,23 @@
 
-<div class="alert alert-info" ng-if="type=='info'">
+<div class="alert" 
+     ng-class="{
+        'alert-info': isInfo, 
+        'alert-warning' : isWarning,
+        'alert-danger' : isDanger,
+        'alert-success' : isSuccess
+     }"
+     ng-show="show">
 
-  <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+  <span ng-if="isInfo" class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+  <span ng-if="isWarning" class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+  <span ng-if="isDanger" class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span>
+  <span ng-if="isSuccess" class="glyphicon glyphicon-ok" aria-hidden="true"></span>
 
   <strong>{{title}}</strong>
   <span>{{message}}</span>
   
-  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+  <button type="button" class="close" ng-click="close()">
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
-
-
-<div class="alert alert-warning" ng-if="type=='warning'">
-
-  <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
-
-  <strong>{{title}}</strong>
-  <span>{{message}}</span>
-  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
-  </button>
-</div>
-
-
-<div class="alert alert-danger" ng-if="type=='danger'">
-
-  <span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span>
-
-  <strong>{{title}}</strong>
-  <span>{{message}}</span>
-  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
-  </button>
-</div>
-
-
-<div class="alert alert-success" ng-if="type=='success'">
-
-  <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-
-  <strong>{{title}}</strong>
-  <span>{{message}}</span>
-
-  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
-  </button>
-</div>
-
 
