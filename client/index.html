@@ -32,12 +32,16 @@
       
       <div class="jumbotron">
         <h3> {{ app }} </h3>
-      
-        <slim-alert title="Info:" message="My information will be here!" type="info"></slim-alert>
+        
+        <slim-alert title="Info:" message="{{mensagemm}}" type="info"></slim-alert>
         <slim-alert title="Warning:" message="Be careful!" type="warning"></slim-alert>
         <slim-alert title="Danger:" message="I want to leave this place!" type="danger"></slim-alert>
         <slim-alert title="Success" message="All right!" type="success"></slim-alert>
         
+        <button ng-click="msgI()">Add I</button>
+        <button ng-click="msgW()">Add W</button>
+        <button ng-click="msgD()">Add D</button>
+        <button ng-click="msgS()">Add S</button>
         <ui-alert title="Ops, something is wrong!">
           {{ error }}
         </ui-alert>

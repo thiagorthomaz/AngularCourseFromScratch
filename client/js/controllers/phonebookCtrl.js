@@ -1,4 +1,4 @@
-app.controller("phonebookCtrl", function ($scope, $filter, ContactsAPI, OperatorAPI) {
+app.controller("phonebookCtrl", function ($scope,$rootScope, $filter, ContactsAPI, OperatorAPI) {
   $scope.app = "Phonebook!";
   $scope.contact = {date : new Date().getTime()};
   
@@ -17,6 +17,14 @@ app.controller("phonebookCtrl", function ($scope, $filter, ContactsAPI, Operator
       }
       
     });
+  };
+  
+  $scope.msgD = function() {$rootScope.$broadcast('showDanger', true);}
+
+  $scope.msgI = function() {
+    $scope.type === 'info';
+    $scope.mensagemm = "My information will be here!";      
+    //$rootScope.$broadcast('showInfo', true);
   };
 
   var loadOperators = function () {
