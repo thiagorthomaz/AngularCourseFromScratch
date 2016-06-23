@@ -1,13 +1,15 @@
-app.directive("slimAlert", function () {
+angular.module("slimAlert", []);
+
+angular.module("slimAlert").directive("slimAlert", function () {
   return {
-    template: '<div class="alert"' +
+    template: '<div class="alert text-center"' +
             'ng-class="{' +
             "'alert-info': isInfo, " +
             "'alert-warning' : isWarning," +
             "'alert-danger' : isDanger," +
             "'alert-success' : isSuccess" +
             '}"' +
-            'ng-show="(showInfo && isInfo) || (showWarning && isWarning) || (showDanger && isDanger) || (showSucesso && isSuccess)">' +
+            'ng-show="(showInfo && isInfo) || (showWarning && isWarning) || (showDanger && isDanger) || (showSuccess && isSuccess)">' +
             '<span ng-if="isInfo" class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>' +
             '<span ng-if="isWarning" class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>' +
             '<span ng-if="isDanger" class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span>' +
@@ -27,7 +29,7 @@ app.directive("slimAlert", function () {
   };
 });
 
-app.controller("SlimAlertCtrl", function ($scope) {
+angular.module("slimAlert").controller("SlimAlertCtrl", function ($scope) {
 
   $scope.$on("showInfo", function(event, args) {
     if (args) $scope.showInfo = true;
@@ -46,8 +48,6 @@ app.controller("SlimAlertCtrl", function ($scope) {
   $scope.isWarning = $scope.type === 'warning';
   $scope.isDanger = $scope.type === 'danger';
   $scope.isSuccess = $scope.type === 'success';
-
-  $scope.show = true;
 
   $scope.close = function () {
     $scope.showInfo = false;
