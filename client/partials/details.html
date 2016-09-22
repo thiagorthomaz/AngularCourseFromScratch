@@ -1,0 +1,15 @@
+<h1>Details</h1>
+
+<div ng-controller="detailsCtrl">
+  
+  
+  <ul class="list-group">
+    <li class="list-group-item" ng-repeat="l in list">{{ l.id }} - Cras justo odio</li>
+  </ul>
+  
+  <select class="form-control" ng-model="contact.operator" ng-options="operator.name + ' (' + (operator.price | currency) + ')' group by operator.category for operator in operators | orderBy:'name'">
+    <option value="">Select one operator</option>
+  </select>
+  
+  
+</div>

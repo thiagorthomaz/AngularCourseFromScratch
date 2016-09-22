@@ -20,6 +20,7 @@ app.controller("phonebookCtrl", function ($scope,$rootScope, $filter, ContactsAP
   };
   
   $scope.msgD = function() {$rootScope.$broadcast('showDanger', true);}
+  $scope.msgS = function() {$rootScope.$broadcast('showSuccess', true);}
 
   $scope.msgI = function() {
     $scope.type === 'info';

@@ -1,0 +1,71 @@
+<div ng-controller="phonebookCtrl">
+
+  <div class="jumbotron">
+    <h3> {{ app}} </h3>
+
+    <slim-alert title="Info:" message="{{mensagemm}}" type="info"></slim-alert>
+    <slim-alert title="Warning:" message="Be careful!" type="warning"></slim-alert>
+    <slim-alert title="Danger:" message="I want to leave this place!" type="danger"></slim-alert>
+    <slim-alert title="Success" message="All right!" type="success"></slim-alert>
+
+    <button ng-click="msgI()">Add I</button>
+    <button ng-click="msgW()">Add W</button>
+    <button ng-click="msgD()">Add D</button>
+    <button ng-click="msgS()">Add S</button>
+    <ui-alert title="Ops, something is wrong!">
+      {{ error}}
+    </ui-alert>
+
+    <input type="text" class="form-control" ng-model="search" placeholder="Type for seach" />
+
+    <table ng-show="contacts.length > 0" class="table">
+      <thead>
+        <tr>
+          <th></th>
+          <th><a href="" ng-click="orderBy('id')">Id</a></th>
+          <th><a href="" ng-click="orderBy('nome')">Name</a></th>
+          <th><a href="" ng-click="orderBy('phone')">Phone</a></th>
+          <th><a href="" ng-click="orderBy('operator')">Operator</a></th>
+          <th><a href="" ng-click="orderBy('date')">Date</a></th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        <tr ng-class="{ selected : c.selected }" ng-repeat="c in contacts| filter:search | orderBy:orderByField:directionoOfOrder">
+          <td><input type="checkbox" ng-model="c.selected" /></td>
+          <td><a ui-sref="details({id : c.id})">{{c.id}}</a></td>
+          <td>{{c.name| name | ellipsis:10}}</td>
+          <td>{{c.phone}}</td>
+          <td>{{c.operator.name| lowercase}}</td>
+          <td>{{c.date| date:'dd/MM/yyyy HH:mm' }}</td>
+        </tr>
+      </tbody>
+
+    </table>
+
+    <hr>
+
+    {{ contact.date}}
+
+    <input class="form-control" type="text" placeholder="Name" ng-model="contact.name">
+    <input class="form-control" type="text" placeholder="Phone" ng-model="contact.phone">
+    <input class="form-control" type="text" placeholder="Date" ng-model="contact.date" ui-date>
+
+    <select class="form-control" ng-model="contact.operator" ng-options="operator.name + ' (' + (operator.price | currency) + ')' group by operator.category for operator in operators | orderBy:'name'">
+      <option value="">Select one operator</option>
+    </select>
+
+    <button class="btn btn-primary btn-block" 
+            ng-click="addContact(contact)"
+            ng-disabled="!contact.name || !contact.phone"
+            >Add contact</button>
+
+    <button class="btn btn-danger btn-block" 
+            ng-click="removeContact(contacts)"
+            ng-if="isContactSelected(contacts)"
+            >Remove contact</button>
+
+  </div>
+
+</div>
