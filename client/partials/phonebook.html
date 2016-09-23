@@ -34,7 +34,7 @@
 
         <tr ng-class="{ selected : c.selected }" ng-repeat="c in contacts| filter:search | orderBy:orderByField:directionoOfOrder">
           <td><input type="checkbox" ng-model="c.selected" /></td>
-          <td><a ui-sref="details({id : c.id})">{{c.id}}</a></td>
+          <td><a ui-sref="default.details({id : c.id})">{{c.id}}</a></td>
           <td>{{c.name| name | ellipsis:10}}</td>
           <td>{{c.phone}}</td>
           <td>{{c.operator.name| lowercase}}</td>

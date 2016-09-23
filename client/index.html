@@ -28,11 +28,9 @@
     <script src="js/controllers/detailsCtrl.js"></script>
 
   </head>
-  <body>
+  <body class="container">
 
-    <a ui-sref="phonebook" ui-sref-active="active">Phonebook</a>
-
-    <ui-view></ui-view>
+    <div ui-view="default"></div>
 
   <div class="footer" ng-include="'partials/footer.html'"></div>
 </body>
